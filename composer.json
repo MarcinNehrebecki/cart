@@ -1,0 +1,14 @@
+{
+    "type": "project",
+    "autoload": {
+        "classmap": [
+            "Cart",
+            "Controller",
+            "Product",
+            "ProductCollection"
+        ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    }
+}
