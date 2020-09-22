@@ -1,6 +1,5 @@
 <?php
 
-use Cart\Cart;
 use Controller\CartController;
 use Repository\CatalogRepository;
 
@@ -30,19 +29,19 @@ if (isset($uri[2])) {
             case 'DELETE':
                 if ('cart' === $class) {
                     $message = deleteProduct();
-                } elseif ('deleteCatalogInDataBse' === $class) {
+                } elseif ('catalog' === $class) {
                     $message = deleteCatalogInDataBse();
                 }
                 break;
             case 'PUT':
-                if ('changeName' === $class) {
+                if ('catalogChangeName' === $class) {
                     $message = changeName();
-                } elseif ('changePrice' === $class) {
+                } elseif ('catalogChangePrice' === $class) {
                     $message = changePrice();
                 }
                 break;
             case 'POST':
-                if ('addFixture' === $class) {
+                if ('catalog' === $class) {
                     $message = addFixture();
                 } elseif ('cart' === $class) {
                     addProduct();
@@ -173,6 +172,9 @@ function changeName(): string
     return $message;
 }
 
+/**
+ * @return string
+ */
 function changePrice()
 {
     $uri = getUri();
@@ -186,6 +188,9 @@ function changePrice()
     return $message;
 }
 
+/**
+ * @return array
+ */
 function getUri(): array
 {
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

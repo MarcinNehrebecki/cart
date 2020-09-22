@@ -8,8 +8,7 @@
             "Entity",
             "Product",
             "CatalogCollection",
-            "Repository",
-            "Config.php"
+            "Repository"
         ]
     },
     "require-dev": {

@@ -2,6 +2,8 @@
 
 namespace DataBaseConnection;
 
+require_once(__DIR__ . '\..\Config.php');
+
 use Config;
 
 /**
