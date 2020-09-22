@@ -72,8 +72,8 @@ class CartController
     {
         $data = ['cart' => []];
         /** @var CatalogEntity $catalog */
-        foreach ($listCatalogEntity->getCollection() as $catalog) {
-            $data['cart']['products'][] = [
+        foreach ($listCatalogEntity->getCollection() as $key =>  $catalog) {
+            $data['cart']['products'][$key] = [
                 'name' => $catalog->getName(),
                 'price' => $catalog->getPrice() / 100,
                 'currency' => $catalog->getCurrency(),

@@ -25,6 +25,7 @@ if (isset($uri[2])) {
                 } elseif ('cart' === $class) {
                     $message = cart();
                 }
+                http_response_code(200);
                 break;
             case 'DELETE':
                 if ('cart' === $class) {
@@ -32,6 +33,8 @@ if (isset($uri[2])) {
                 } elseif ('catalog' === $class) {
                     $message = deleteCatalogInDataBse();
                 }
+                http_response_code(202);
+
                 break;
             case 'PUT':
                 if ('catalogChangeName' === $class) {
@@ -39,16 +42,19 @@ if (isset($uri[2])) {
                 } elseif ('catalogChangePrice' === $class) {
                     $message = changePrice();
                 }
+                http_response_code(202);
                 break;
             case 'POST':
                 if ('catalog' === $class) {
                     $message = addFixture();
                 } elseif ('cart' === $class) {
-                    addProduct();
+                    $message = addProduct();
                 }
+                http_response_code(201);
                 break;
         }
     } catch (Exception $e) {
+        http_response_code(404);
         $message = $e->getMessage();
     }
 
@@ -57,12 +63,13 @@ if (isset($uri[2])) {
 
 /**
  * @return string
+ * @throws Exception
  */
 function deleteProduct(): string
 {
     $uri = getUri();
     if (!isset($uri[3])) {
-        return 'Wrong Request';
+        throw new Exception('Wrong Request');
     }
 
     $cartController = new CartController();
@@ -75,13 +82,13 @@ function deleteProduct(): string
 
 /**
  * @return string
+ * @throws Exception
  */
 function deleteCatalogInDataBse(): string
 {
     $uri = getUri();
-    $message = 'Wrong Request';
     if (!isset($uri[3]) || !isset($uri[4])) {
-        return $message;
+        throw new Exception('Wrong Request');
     }
     $catalogRepository = new CatalogRepository();
     $catalogId = (int)$uri[4];
@@ -89,13 +96,15 @@ function deleteCatalogInDataBse(): string
         $message = $catalogRepository->deleteCatalogOnId($catalogId);
     } elseif (0 === (int)$uri[3]) {
         $message = $catalogRepository->deleteSoftCatalogOnId($catalogId);
+    } else {
+        throw new Exception('Wrong Request');
     }
-
     return $message;
 }
 
 /**
  * @return string
+ * @throws Exception
  */
 function addFixture(): string
 {
@@ -132,19 +141,18 @@ function catalog(): array
  */
 function addProduct(): string
 {
+    if (!isset($uri[3])) {
+        throw new Exception('Wrong Request');
+    }
     $uri = getUri();
     $catalogRepository = new CatalogRepository();
     $cartController = new CartController();
-    $message = 'Wrong Request';
-    if (isset($uri[3])) {
-        $productId = (int)$uri[3];
-        $product = $catalogRepository->getCatalogOnId($productId);
-        $cart = $cartController->addProduct($product);
-        $_SESSION['cart'] = serialize($cart);
-        $message = 'Product Added';
-    }
+    $productId = (int)$uri[3];
+    $product = $catalogRepository->getCatalogOnId($productId);
+    $cart = $cartController->addProduct($product);
+    $_SESSION['cart'] = serialize($cart);
 
-    return $message;
+    return 'Product Added';
 }
 
 /**
@@ -158,34 +166,35 @@ function cart(): array
 
 /**
  * @return string
+ * @throws Exception
  */
 function changeName(): string
 {
     $uri = getUri();
-    $message = 'Wrong Request';
-    $catalogRepository = new CatalogRepository();
-    if (isset($uri[3]) && isset($uri[4])) {
-        $catalogId = (int)$uri[3];
-        $newName = (string)$uri[4];
-        $message = $catalogRepository->changeNameInCatalog($catalogId, $newName);
+    if (!isset($uri[3]) || !isset($uri[4])) {
+        throw new Exception('Wrong Request');
     }
-    return $message;
+    $catalogRepository = new CatalogRepository();
+    $catalogId = (int)$uri[3];
+    $newName = (string)$uri[4];
+    return $catalogRepository->changeNameInCatalog($catalogId, $newName);
 }
 
 /**
  * @return string
+ * @throws Exception
  */
 function changePrice()
 {
-    $uri = getUri();
-    $message = 'Wrong Request';
-    $catalogRepository = new CatalogRepository();
-    if (isset($uri[3]) && isset($uri[4])) {
-        $catalogId = (int)$uri[3];
-        $newPrice = (int)($uri[4] * 100);
-        $message = $catalogRepository->changePriceInCatalog($catalogId, $newPrice);
+    if (!isset($uri[3]) || !isset($uri[4])) {
+        throw new Exception('Wrong Request');
     }
-    return $message;
+    $uri = getUri();
+    $catalogRepository = new CatalogRepository();
+
+    $catalogId = (int)$uri[3];
+    $newPrice = (int)($uri[4] * 100);
+    return $catalogRepository->changePriceInCatalog($catalogId, $newPrice);
 }
 
 /**
@@ -196,5 +205,3 @@ function getUri(): array
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     return explode( '/', $uri );
 }
-
-

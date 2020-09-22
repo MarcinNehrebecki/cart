@@ -7,6 +7,7 @@ namespace Repository;
 use CatalogCollection\CatalogCollection;
 use CatalogEntity;
 use DataBaseConnection\ConnectionToDb;
+use Exception;
 use Product\ProductList;
 
 class CatalogRepository
@@ -63,6 +64,7 @@ class CatalogRepository
     /**
      * @param int $productNumber
      * @return string
+     * @throws Exception
      */
     public function setOneCatalogToDataBase(int $productNumber): string
     {
@@ -81,12 +83,16 @@ class CatalogRepository
         $pdo = $connection->getConnectionDatabase();
         $statement = $pdo->prepare($sql);
         $sta = $statement->execute($queryValue);
-        return $sta ? 'Product added to database' : 'Wrong Product Number (1-6)';
+        if (!$sta) {
+            throw new Exception('Wrong Request');
+        }
+        return 'Product added to database';
     }
 
 
     /**
      *
+     * @throws Exception
      */
     public function setAllCatalogToDatabase(): string
     {
@@ -106,12 +112,16 @@ class CatalogRepository
 
         $statement = $pdo->prepare($sql);
         $sta = $statement->execute($queryValue);
-        return $sta ? 'Product added to database' : 'Wrong request';
+        if (!$sta) {
+            throw new Exception('Wrong Request');
+        }
+        return 'Product added to database';
     }
 
     /**
      * @param int $catalogId
      * @return string
+     * @throws Exception
      */
     public function deleteCatalogOnId(int $catalogId): string
     {
@@ -121,12 +131,16 @@ class CatalogRepository
 
         $statement = $pdo->prepare($sql);
         $sta = $statement->execute([$catalogId]);
-        return $sta ? 'Catalog deleted in database' : 'Wrong request';
+        if (!$sta) {
+            throw new Exception('Wrong Request');
+        }
+        return 'Catalog deleted in database';
     }
 
     /**
      * @param int $catalogId
      * @return string
+     * @throws Exception
      */
     public function deleteSoftCatalogOnId(int $catalogId): string
     {
@@ -136,13 +150,17 @@ class CatalogRepository
 
         $statement = $pdo->prepare($sql);
         $sta = $statement->execute([date('Y-m-d H:i:s'),$catalogId]);
-        return $sta ? 'Catalog deleted in database' : 'Wrong request';
+        if (!$sta) {
+            throw new Exception('Wrong Request');
+        }
+        return 'Catalog deleted in database';
     }
 
     /**
      * @param int $catalogId
      * @param $newName
      * @return string
+     * @throws Exception
      */
     public function changeNameInCatalog(int $catalogId, $newName): string
     {
@@ -152,13 +170,17 @@ class CatalogRepository
 
         $statement = $pdo->prepare($sql);
         $sta = $statement->execute([$newName, $catalogId]);
-        return $sta ? 'Name Changed' : 'Wrong request';
+        if (!$sta) {
+            throw new Exception('Wrong Request');
+        }
+        return 'Name Changed';
     }
 
     /**
      * @param int $catalogId
      * @param int $newPrice
      * @return string
+     * @throws Exception
      */
     public function changePriceInCatalog(int $catalogId, int $newPrice): string
     {
@@ -168,6 +190,9 @@ class CatalogRepository
 
         $statement = $pdo->prepare($sql);
         $sta = $statement->execute([$newPrice, $catalogId]);
-        return $sta ? 'Price Changed' : 'Wrong request';
+        if (!$sta) {
+            throw new Exception('Wrong Request');
+        }
+        return 'Price Changed';
     }
 }
