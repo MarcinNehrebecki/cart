@@ -59,4 +59,11 @@ class Cart extends AbstractCart implements CartInterface
         $this->listOfClassCollection->removeProduct($productNumber);
     }
 
+    /**
+     * @return array
+     */
+    public function getProductsList(): array
+    {
+        return $this->listOfClassCollection->getCollection();
+    }
 }

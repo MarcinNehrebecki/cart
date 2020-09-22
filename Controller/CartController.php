@@ -20,11 +20,11 @@ class CartController
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getCart(): string
+    public function getCart(): array
     {
-        return print_r($this->cart, true);
+        return $this->cartToShow();
     }
 
     /**
@@ -46,5 +46,23 @@ class CartController
     {
         $this->cart->deleteProduct($productNumberInCart);
         return $this->cart;
+    }
+
+    /**
+     * @return array
+     */
+    private function cartToShow(): array
+    {
+        $data = ['cart' => []];
+        /** @var Product $product */
+        foreach ($this->cart->getProductsList() as $product) {
+            $data['cart']['products'][] = [
+                'name' => $product->getName(),
+                'price' => $product->getPrice() / 100,
+                'currency' => $product->getCurrency(),
+            ];
+        }
+        $data['cart']['sumPrice'] = $this->cart->getPriceAllProduct() / 100;
+        return $data;
     }
 }

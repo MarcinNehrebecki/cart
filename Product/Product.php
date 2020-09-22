@@ -11,7 +11,7 @@ class Product extends AbstractProduct implements ProductInterface
      */
     public function getPrice(): int
     {
-        // TODO: Implement getPrice() method.
+        return $this->price;
     }
 
     /**
@@ -20,7 +20,7 @@ class Product extends AbstractProduct implements ProductInterface
      */
     public function getName(): string
     {
-        // TODO: Implement getName() method.
+        return $this->name;
     }
 
     /**
@@ -28,7 +28,7 @@ class Product extends AbstractProduct implements ProductInterface
      */
     public function getCurrency(): string
     {
-        // TODO: Implement getCurrency() method.
+        return $this->currency;
     }
 
     /**

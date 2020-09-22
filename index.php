@@ -2,7 +2,7 @@
 session_start();
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
+header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
@@ -38,7 +38,9 @@ if (isset($uri[2])) {
             case 'deleteProduct':
                 if (isset($uri[3])) {
                     $productNumberInCart = (int)$uri[3];
-                    $cartController->deleteProduct($productNumberInCart);
+                    $cart = $cartController->deleteProduct($productNumberInCart);
+                    $_SESSION['cart'] = serialize($cart);
+                    $message = 'Product Deleted';
                 }
                 break;
             default:
