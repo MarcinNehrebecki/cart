@@ -37,9 +37,9 @@ if (isset($uri[2])) {
 
                 break;
             case 'PUT':
-                if ('catalogChangeName' === $class) {
+                if ('catalogName' === $class) {
                     $message = changeName();
-                } elseif ('catalogChangePrice' === $class) {
+                } elseif ('catalogPrice' === $class) {
                     $message = changePrice();
                 }
                 http_response_code(202);
@@ -53,9 +53,16 @@ if (isset($uri[2])) {
                 http_response_code(201);
                 break;
         }
+        if (!is_array($message)) {
+            $message = ['message:' => $message];
+        }
+
+        if ('' === $message) {
+            throw new Exception('Wrong Request');
+        }
     } catch (Exception $e) {
         http_response_code(404);
-        $message = $e->getMessage();
+        $message = ['error:' => $e->getMessage()];
     }
 
     print \json_encode($message, JSON_PRETTY_PRINT);

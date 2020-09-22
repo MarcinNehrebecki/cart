@@ -59,21 +59,22 @@ class CartController
      */
     private function cartToShow(): array
     {
-        $data = $this->prepareShowCatalogEntity($this->cart->getProductsList());
+        $data = $this->prepareShowCatalogEntity($this->cart->getProductsList(), true);
         $data['cart']['sumPrice'] = $this->cart->getPriceAllProduct() / 100;
         return $data;
     }
 
     /**
      * @param CatalogCollection $listCatalogEntity
+     * @param bool $useCart
      * @return array
      */
-    public function prepareShowCatalogEntity(CatalogCollection $listCatalogEntity): array
+    public function prepareShowCatalogEntity(CatalogCollection $listCatalogEntity, bool $useCart = false): array
     {
         $data = ['cart' => []];
         /** @var CatalogEntity $catalog */
         foreach ($listCatalogEntity->getCollection() as $key =>  $catalog) {
-            $data['cart']['products'][$key] = [
+            $data['cart']['products'][$useCart ? $key : $catalog->getId()] = [
                 'name' => $catalog->getName(),
                 'price' => $catalog->getPrice() / 100,
                 'currency' => $catalog->getCurrency(),
