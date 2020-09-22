@@ -15,24 +15,30 @@ if (isset($uri[2])) {
     $class = $uri[2];
     if (isset($_SESSION["cart"])) {
         $cart = unserialize($_SESSION["cart"]);
-        //$cart = new \Cart\Cart();
     } else {
         $cart = new \Cart\Cart();
-
     }
     try {
+        $cartController = new \Controller\CartController($cart);
+
         switch ($class) {
             case 'cart':
-                $cartController = new \Controller\CartController();
                 $message = $cartController->getCart();
                 break;
             case 'addProduct':
-                if (isset($uri[3]) and (int)$uri[3]) {
+                if (isset($uri[3])) {
+                    $productId = (int)$uri[3];
                     $productsList = new \Product\ProductList();
-                    $product = $productsList->getProduct($uri[3]);
-                    $cart->addProductToCollection($product);
+                    $product = $productsList->getProduct($productId);
+                    $cart = $cartController->addProduct($product);
                     $_SESSION['cart'] = serialize($cart);
                     $message = 'Product Added';
+                }
+                break;
+            case 'deleteProduct':
+                if (isset($uri[3])) {
+                    $productNumberInCart = (int)$uri[3];
+                    $cartController->deleteProduct($productNumberInCart);
                 }
                 break;
             default:

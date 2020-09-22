@@ -38,6 +38,10 @@ class Cart extends AbstractCart implements CartInterface
         return $price;
     }
 
+    /**
+     * @param Product $product
+     * @throws \Exception
+     */
     public function addProductToCollection(Product $product): void
     {
         if (self::MAX_PRODUCT_ON_CART > $this->getCountProduct()) {
@@ -45,6 +49,14 @@ class Cart extends AbstractCart implements CartInterface
         } else {
             throw new \Exception('Cart is full');
         }
+    }
+
+    /**
+     * @param int $productNumber
+     */
+    public function deleteProduct(int $productNumber): void
+    {
+        $this->listOfClassCollection->removeProduct($productNumber);
     }
 
 }
