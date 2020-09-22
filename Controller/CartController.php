@@ -15,8 +15,13 @@ class CartController
      */
     private Cart $cart;
 
-    public function __construct(Cart $cart)
+    public function __construct()
     {
+        if (isset($_SESSION["cart"])) {
+            $cart = unserialize($_SESSION["cart"]);
+        } else {
+            $cart = new Cart();
+        }
         $this->cart = $cart;
     }
 
