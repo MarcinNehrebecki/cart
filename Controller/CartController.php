@@ -5,7 +5,8 @@ namespace Controller;
 
 
 use Cart\Cart;
-use Product\Product;
+use CatalogCollection\CatalogCollection;
+use CatalogEntity;
 
 class CartController
 {
@@ -28,13 +29,13 @@ class CartController
     }
 
     /**
-     * @param Product $product
+     * @param CatalogEntity $catalog
      * @return Cart
      * @throws \Exception
      */
-    public function addProduct(Product $product): Cart
+    public function addProduct(CatalogEntity $catalog): Cart
     {
-        $this->cart->addProductToCollection($product);
+        $this->cart->addProductToCollection($catalog);
         return $this->cart;
     }
 
@@ -53,16 +54,26 @@ class CartController
      */
     private function cartToShow(): array
     {
+        $data = $this->prepareShowCatalogEntity($this->cart->getProductsList());
+        $data['cart']['sumPrice'] = $this->cart->getPriceAllProduct() / 100;
+        return $data;
+    }
+
+    /**
+     * @param CatalogCollection $listCatalogEntity
+     * @return array
+     */
+    public function prepareShowCatalogEntity(CatalogCollection $listCatalogEntity): array
+    {
         $data = ['cart' => []];
-        /** @var Product $product */
-        foreach ($this->cart->getProductsList() as $product) {
+        /** @var CatalogEntity $catalog */
+        foreach ($listCatalogEntity->getCollection() as $catalog) {
             $data['cart']['products'][] = [
-                'name' => $product->getName(),
-                'price' => $product->getPrice() / 100,
-                'currency' => $product->getCurrency(),
+                'name' => $catalog->getName(),
+                'price' => $catalog->getPrice() / 100,
+                'currency' => $catalog->getCurrency(),
             ];
         }
-        $data['cart']['sumPrice'] = $this->cart->getPriceAllProduct() / 100;
         return $data;
     }
 }

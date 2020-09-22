@@ -1,19 +1,19 @@
 <?php
 
 
-namespace ProductCollection;
+namespace CatalogCollection;
 
 
-use Product\Product;
+use CatalogEntity;
 
-interface ProductCollectionInterface
+interface CatalogCollectionInterface
 {
     public function count(): int;
     public function getCollection(): array;
     public function clear(): void;
-    public function addToCollection(Product $product): void;
+    public function addToCollection(CatalogEntity $catalog): void;
     public function setCollection(array $collection): void;
     public function removeProduct(int $key): void;
-    public function getProduct(int $key): Product;
+    public function getProduct(int $key): CatalogEntity;
 
 }

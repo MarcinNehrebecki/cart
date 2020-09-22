@@ -2,8 +2,6 @@
 
 namespace Product;
 
-use Exception;
-
 class ProductList
 {
     const DEFAULT_CURRENCY = 'PLN';
@@ -22,33 +20,5 @@ class ProductList
     public function getProducts(): array
     {
         return $this->products;
-    }
-
-    /**
-     * @param $key
-     * @return Product
-     * @throws Exception
-     */
-    public function getProduct($key): Product
-    {
-        if (!isset($this->products[$key])) {
-            throw new Exception('Product is not Isset', 404);
-        }
-
-        $product = new Product();
-        $product->setName($this->products[$key]['name']);
-        $product->setCurrency($this->products[$key]['currency']);
-        $product->setPrice($this->getPriceIntOnString($this->products[$key]['price']));
-
-        return $product;
-    }
-
-    /**
-     * @param string $price
-     * @return int
-     */
-    public function getPriceIntOnString(string $price): int
-    {
-        return round(((float)$price * 100));
     }
 }

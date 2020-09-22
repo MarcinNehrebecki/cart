@@ -4,10 +4,10 @@
 namespace Cart;
 
 
-use ProductCollection\ProductCollection;
+use CatalogCollection\CatalogCollection;
 
 abstract class AbstractCart
 {
     const MAX_PRODUCT_ON_CART = 3;
-    protected ProductCollection $listOfClassCollection;
+    protected CatalogCollection $listOfClassCollection;
 }

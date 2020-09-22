@@ -1,12 +1,12 @@
 <?php
 
 
-namespace ProductCollection;
+namespace CatalogCollection;
 
 
-use Product\Product;
+use CatalogEntity;
 
-class ProductCollection implements ProductCollectionInterface
+class CatalogCollection implements CatalogCollectionInterface
 {
     /** @var array  */
     protected array $collection = [];
@@ -37,11 +37,11 @@ class ProductCollection implements ProductCollectionInterface
     }
 
     /**
-     * @param Product $product
+     * @param CatalogEntity $catalog
      */
-    public function addToCollection(Product $product): void
+    public function addToCollection(CatalogEntity $catalog): void
     {
-        $this->collection[] = $product;
+        $this->collection[] = $catalog;
     }
 
     public function setCollection(array $collection): void
@@ -59,9 +59,9 @@ class ProductCollection implements ProductCollectionInterface
 
     /**
      * @param int $key
-     * @return Product
+     * @return CatalogEntity
      */
-    public function getProduct(int $key): Product
+    public function getProduct(int $key): CatalogEntity
     {
         return $this->collection[$key];
     }

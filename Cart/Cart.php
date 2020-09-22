@@ -4,15 +4,15 @@
 namespace Cart;
 
 
-use Product\Product;
-use ProductCollection\ProductCollection;
+use CatalogEntity;
+use CatalogCollection\CatalogCollection;
 
 class Cart extends AbstractCart implements CartInterface
 {
 
     public function __construct()
     {
-        $this->listOfClassCollection = new ProductCollection();
+        $this->listOfClassCollection = new CatalogCollection();
     }
 
     /**
@@ -31,21 +31,21 @@ class Cart extends AbstractCart implements CartInterface
     public function getPriceAllProduct(): int
     {
         $price = 0;
-        /** @var Product $product */
-        foreach ($this->listOfClassCollection->getCollection() as $product) {
-            $price += $product->getPrice();
+        /** @var CatalogEntity $catalog */
+        foreach ($this->listOfClassCollection->getCollection() as $catalog) {
+            $price += $catalog->getPrice();
         }
         return $price;
     }
 
     /**
-     * @param Product $product
+     * @param CatalogEntity $catalog
      * @throws \Exception
      */
-    public function addProductToCollection(Product $product): void
+    public function addProductToCollection(CatalogEntity $catalog): void
     {
         if (self::MAX_PRODUCT_ON_CART > $this->getCountProduct()) {
-            $this->listOfClassCollection->addToCollection($product);
+            $this->listOfClassCollection->addToCollection($catalog);
         } else {
             throw new \Exception('Cart is full');
         }
@@ -60,10 +60,10 @@ class Cart extends AbstractCart implements CartInterface
     }
 
     /**
-     * @return array
+     * @return CatalogCollection
      */
-    public function getProductsList(): array
+    public function getProductsList(): CatalogCollection
     {
-        return $this->listOfClassCollection->getCollection();
+        return $this->listOfClassCollection;
     }
 }
