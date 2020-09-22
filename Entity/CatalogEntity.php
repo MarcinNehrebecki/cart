@@ -12,7 +12,7 @@ class CatalogEntity
     /** @var string */
     private string $currency;
 
-    public function __construct(int $id, $name, $price, $currency)
+    public function __construct(int $id, string $name,int $price, string $currency)
     {
         $this->id = $id;
         $this->name = $name;

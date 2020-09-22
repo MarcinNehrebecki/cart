@@ -52,7 +52,7 @@ class CatalogCollection implements CatalogCollectionInterface
     /**
      * @param int $key
      */
-    public function removeProduct(int $key): void
+    public function removeCatalog(int $key): void
     {
         unset($this->collection[$key]);
     }
@@ -61,7 +61,7 @@ class CatalogCollection implements CatalogCollectionInterface
      * @param int $key
      * @return CatalogEntity
      */
-    public function getProduct(int $key): CatalogEntity
+    public function getCatalog(int $key): CatalogEntity
     {
         return $this->collection[$key];
     }

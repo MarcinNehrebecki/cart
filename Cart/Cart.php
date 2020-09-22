@@ -56,7 +56,7 @@ class Cart extends AbstractCart implements CartInterface
      */
     public function deleteProduct(int $productNumber): void
     {
-        $this->listOfClassCollection->removeProduct($productNumber);
+        $this->listOfClassCollection->removeCatalog($productNumber);
     }
 
     /**
