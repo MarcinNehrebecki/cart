@@ -24,3 +24,20 @@
     - add product in cart POST "/cart/id/" - id=id in table
     - delete product in cart DELETE "/cart/id/" id=id in cart
   
+## Before:
+    - use this sql in database:
+    
+       create table catalog
+       (
+           id       int auto_increment,
+           name     varchar(255)             not null,
+           price    int        default 0     not null,
+           currency varchar(5) default 'PLN' not null,
+           deleted  datetime                 null,
+           constraint catalog_id_uindex
+               unique (id)
+       );
+       
+       alter table catalog
+           add primary key (id);
+       
